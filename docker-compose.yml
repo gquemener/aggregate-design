@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+    php:
+        build:
+            context: ./docker/php
+            args:
+                wait_version: 2.9.0
+        working_dir: /app
+        volumes:
+            - '.:/app'
+        user: '${UID:-1000}:${GID:-1000}'
+        depends_on:
+            - postgres
+        environment:
+            WAIT_HOSTS: postgres:5432
+            WAIT_LOGGER_LEVEL: info
+            DB_DSN: 'pgsql://bruce:mypass@postgres:5432/agg_design'
+
+    postgres:
+        image: postgres:13
+        volumes:
+            - './docker/pgsql:/docker-entrypoint-initdb.d'
+        environment:
+            POSTGRES_DB: agg_design
+            POSTGRES_USER: bruce
+            POSTGRES_PASSWORD: mypass
+        ports:
+            - '5432:5432'
+        command: ["postgres", "-c", "log_statement=all"]

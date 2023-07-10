@@ -1,0 +1,21 @@
+{
+    "name": "gquemener/aggregate-design",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "App\\Scrum\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Gildas Quéméner",
+            "email": "gildas.quemener@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "^2.15",
+        "ramsey/uuid": "^4.7",
+        "symfony/cache": "^6.3"
+    }
+}

@@ -1,0 +1,45 @@
+#!/usr/bin/env php
+<?php
+
+declare(ticks = 1);
+
+include dirname(__DIR__) . '/vendor/autoload.php';
+
+use App\Scrum\Domain\Product;
+use App\Scrum\Domain\TenantId;
+use Doctrine\DBAL\DriverManager;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
+use Symfony\Component\Cache\Adapter\NullAdapter;
+
+pcntl_signal(SIGINT, function () {
+    exit(1);
+});
+
+$id = $argv[1];
+
+$connection = DriverManager::getConnection([
+    'driver' => 'pdo_pgsql',
+    'url' => $_ENV['DB_DSN'],
+]);
+$configuration = ORMSetup::createAttributeMetadataConfiguration(
+    paths: ['src/Domain/'],
+    cache: new NullAdapter(),
+);
+$entityManager = new EntityManager($connection, $configuration);
+
+$repository = $entityManager->getRepository(Product::class);
+if (null === $product = $repository->find($id)) {
+    $product = new Product();
+    $product->setId($id);
+    $product->setName('The Chill-O-Matic 5000');
+    $product->setDescription('An ice cream machine');
+    $product->setTenantId(TenantId::generate());
+    $entityManager->persist($product);
+    $entityManager->flush();
+};
+
+while(true) {
+    $product->setName(uniqid($id, true));
+    $entityManager->flush();
+}
