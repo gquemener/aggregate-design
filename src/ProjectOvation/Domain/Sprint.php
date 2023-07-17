@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scrum\Domain;
+namespace App\ProjectOvation\Domain;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -10,11 +10,11 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
 
 #[Entity]
-final class Release
+final class Sprint
 {
     #[Id, GeneratedValue, Column]
     private int $id;
 
-    #[ManyToOne(inversedBy: 'releases'), JoinColumn(nullable: false)]
+    #[ManyToOne(inversedBy: 'sprints'), JoinColumn(nullable: false)]
     private Product $product;
 }

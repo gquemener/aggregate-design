@@ -3,19 +3,23 @@
 
 include dirname(__DIR__) . '/vendor/autoload.php';
 
+use App\ProjectOvation\Infrastructure\Doctrine\Types\ProductId;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Types\Type;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Console\ConsoleRunner;
 use Doctrine\ORM\Tools\Console\EntityManagerProvider\SingleManagerProvider;
 use Symfony\Component\Cache\Adapter\NullAdapter;
 
+
+Type::addType('product_id', ProductId::class);
 $connection = DriverManager::getConnection([
     'driver' => 'pdo_pgsql',
     'url' => $_ENV['DB_DSN'],
 ]);
 $configuration = ORMSetup::createAttributeMetadataConfiguration(
-    paths: ['src/Domain/'],
+    paths: ['src/'],
     cache: new NullAdapter(),
 );
 $entityManager = new EntityManager($connection, $configuration);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scrum\Domain;
+namespace App\ProjectOvation\Domain;
 
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Embeddable;

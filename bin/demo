@@ -5,8 +5,8 @@ declare(ticks = 1);
 
 include dirname(__DIR__) . '/vendor/autoload.php';
 
-use App\Scrum\Domain\Product;
-use App\Scrum\Domain\TenantId;
+use App\ProjectOvation\Domain\Product;
+use App\ProjectOvation\Domain\TenantId;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;

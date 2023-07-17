@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Scrum\Domain;
+namespace App\ProjectOvation\Domain;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,8 +15,8 @@ use Doctrine\ORM\Mapping\Version;
 #[Entity]
 final class Product
 {
-    #[Id, GeneratedValue('NONE'), Column]
-    private string $id;
+    #[Id, GeneratedValue('NONE'), Column(type: 'product_id')]
+    private ProductId $id;
 
     #[Column(type: 'integer'), Version]
     private int $version;
