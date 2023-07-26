@@ -11,6 +11,8 @@ final class Shipment
     /** @var array<Stop> */
     private array $stops;
 
+    private bool $delivered = false;
+
     public function __construct(int $id)
     {
         $this->id = $id;
@@ -35,5 +37,23 @@ final class Shipment
                 unset($this->stops[$key]);
             }
         }
+    }
+
+    /**
+     * @return Stop[]
+     */
+    public function getStops(): array
+    {
+        return $this->stops;
+    }
+
+    public function setDelivered(bool $delivered): void
+    {
+        $this->delivered = $delivered;
+    }
+
+    public function isDelivered(): bool
+    {
+        return $this->delivered;
     }
 }
