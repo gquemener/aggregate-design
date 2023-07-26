@@ -11,11 +11,11 @@ final class ShipmentId extends GuidType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-	if (!$value instanceof DomainShipmentId) {
-	    throw new InvalidArgumentException('Value must be an instance of ' . DomainShipmentId::class);
-	}
+        if (!$value instanceof DomainShipmentId) {
+            throw new InvalidArgumentException('Value must be an instance of ' . DomainShipmentId::class);
+        }
 
-	return $value->toString();
+        return $value->toString();
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): DomainShipmentId
@@ -25,6 +25,6 @@ final class ShipmentId extends GuidType
 
     public function getName(): string
     {
-	return 'shipment_id';
+        return 'shipment_id';
     }
 }

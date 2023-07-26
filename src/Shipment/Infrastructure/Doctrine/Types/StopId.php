@@ -11,11 +11,11 @@ final class StopId extends GuidType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-	if (!$value instanceof DomainStopId) {
-	    throw new InvalidArgumentException('Value must be an instance of ' . DomainStopId::class);
-	}
+        if (!$value instanceof DomainStopId) {
+            throw new InvalidArgumentException('Value must be an instance of ' . DomainStopId::class);
+        }
 
-	return $value->toString();
+        return $value->toString();
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): DomainStopId
@@ -25,6 +25,6 @@ final class StopId extends GuidType
 
     public function getName(): string
     {
-	return 'stop_id';
+        return 'stop_id';
     }
 }

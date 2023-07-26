@@ -7,9 +7,10 @@ use Ramsey\Uuid\Uuid;
 
 final class StopId
 {
-    private  function __construct(
+    private function __construct(
         private readonly string $value
-    ) {}
+    ) {
+    }
 
     public static function generate(): self
     {

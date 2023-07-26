@@ -9,10 +9,11 @@ use Ramsey\Uuid\Uuid;
 #[Embeddable]
 final class TenantId
 {
-    private  function __construct(
+    private function __construct(
         #[Column]
         private readonly string $value
-    ) {}
+    ) {
+    }
 
     public static function generate(): self
     {

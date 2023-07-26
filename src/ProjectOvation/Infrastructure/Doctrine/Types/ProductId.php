@@ -11,11 +11,11 @@ final class ProductId extends GuidType
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {
-	if (!$value instanceof DomainProductId) {
-	    throw new InvalidArgumentException('Value must be an instance of ' . DomainProductId::class);
-	}
+        if (!$value instanceof DomainProductId) {
+            throw new InvalidArgumentException('Value must be an instance of ' . DomainProductId::class);
+        }
 
-	return $value->toString();
+        return $value->toString();
     }
 
     /**
@@ -36,6 +36,6 @@ final class ProductId extends GuidType
 
     public function getName(): string
     {
-	return 'product_id';
+        return 'product_id';
     }
 }

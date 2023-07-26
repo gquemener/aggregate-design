@@ -1,37 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Shipment\Domain;
 
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Id;
-use Doctrine\ORM\Mapping\ManyToOne;
-
-#[Entity]
 final class Stop
 {
-    #[Id, GeneratedValue('NONE'), Column(type: 'stop_id')]
-    private StopId $id;
+    private int $id;
 
-    #[Column(type: 'integer', enumType: StopStatus::class)]
-    private StopStatus $status;
+    private string $status = 'in_transit';
 
-    #[ManyToOne, Column(nullable: false)]
     private Shipment $shipment;
 
-    public function setId(StopId $id): void
+    public function __construct(int $id)
     {
         $this->id = $id;
     }
 
-    public function setStatus(StopStatus $status): void
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setStatus(string $status): void
     {
         $this->status = $status;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
     }
 
     public function setShipment(Shipment $shipment): void
     {
         $this->shipment = $shipment;
+    }
+
+    public function getShipment(): Shipment
+    {
+        return $this->shipment;
     }
 }
