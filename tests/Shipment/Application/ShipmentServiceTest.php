@@ -3,9 +3,11 @@
 namespace App\Tests\Shipment\Application;
 
 use App\Shipment\Application\ShipmentService;
-use App\Shipment\Domain\ShipmentRepository;
 use App\Shipment\Domain\Stop;
+use App\Shipment\Domain\ShipmentRepository;
+use App\Shipment\Domain\StopRepository;
 use App\Tests\Shipment\Stubs\InMemoryShipmentRepository;
+use App\Tests\Shipment\Stubs\InMemoryStopRepository;
 use LogicException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -13,11 +15,15 @@ use PHPUnit\Framework\TestCase;
 final class ShipmentServiceTest extends TestCase
 {
     private ShipmentService $service;
-    private ShipmentRepository $repository;
+    private ShipmentRepository $shipmentRepository;
+    private StopRepository $stopRepository;
 
     protected function setUp(): void
     {
-        $this->service = new ShipmentService($this->repository = new InMemoryShipmentRepository());
+        $this->service = new ShipmentService(
+            $this->shipmentRepository = new InMemoryShipmentRepository(),
+            $this->stopRepository = new InMemoryStopRepository(),
+        );
     }
 
     #[Test]
@@ -27,7 +33,7 @@ final class ShipmentServiceTest extends TestCase
             new Stop(20),
         ]);
 
-        $shipment = $this->repository->find(1);
+        $shipment = $this->shipmentRepository->find(1);
         $this->assertNotNull($shipment);
         $this->assertEquals($stops, $shipment->getStops());
         foreach ($shipment->getStops() as $stop) {
@@ -42,17 +48,11 @@ final class ShipmentServiceTest extends TestCase
             new Stop(10),
             new Stop(20),
         ]);
-        $this->service->arriveAtStop(1, 10);
+        $this->service->arriveAtStop(10);
 
-        $shipment = $this->repository->find(1);
-        $this->assertNotNull($shipment);
-        foreach ($shipment->getStops() as $stop) {
-            if ($stop->getId() === 10) {
-                $this->assertEquals('arrived', $stop->getStatus());
-            } else {
-                $this->assertEquals('in_transit', $stop->getStatus());
-            }
-        }
+        $stop = $this->stopRepository->find(10);
+        $this->assertNotNull($stop);
+        $this->assertEquals('arrived', $stop->getStatus());
     }
 
     #[Test]
@@ -61,18 +61,12 @@ final class ShipmentServiceTest extends TestCase
             new Stop(10),
             new Stop(20),
         ]);
-        $this->service->arriveAtStop(1, 10);
-        $this->service->departFromStop(1, 10);
+        $this->service->arriveAtStop(10);
+        $this->service->departFromStop(10);
 
-        $shipment = $this->repository->find(1);
-        $this->assertNotNull($shipment);
-        foreach ($shipment->getStops() as $stop) {
-            if ($stop->getId() === 10) {
-                $this->assertEquals('departed', $stop->getStatus());
-            } else {
-                $this->assertEquals('in_transit', $stop->getStatus());
-            }
-        }
+        $stop = $this->stopRepository->find(10);
+        $this->assertNotNull($stop);
+        $this->assertEquals('departed', $stop->getStatus());
     }
 
     #[Test]
@@ -81,12 +75,12 @@ final class ShipmentServiceTest extends TestCase
             new Stop(10),
             new Stop(20),
         ]);
-        $this->service->arriveAtStop(1, 10);
-        $this->service->departFromStop(1, 10);
-        $this->service->arriveAtStop(1, 20);
-        $this->service->departFromStop(1, 20);
+        $this->service->arriveAtStop(10);
+        $this->service->departFromStop(10);
+        $this->service->arriveAtStop(20);
+        $this->service->departFromStop(20);
 
-        $shipment = $this->repository->find(1);
+        $shipment = $this->shipmentRepository->find(1);
         $this->assertNotNull($shipment);
         $this->assertTrue($shipment->isDelivered());
     }
@@ -100,7 +94,7 @@ final class ShipmentServiceTest extends TestCase
             new Stop(20),
             new Stop(30),
         ]);
-        $this->service->arriveAtStop(1, 10);
-        $this->service->arriveAtStop(1, 20);
+        $this->service->arriveAtStop(10);
+        $this->service->arriveAtStop(20);
     }
 }
